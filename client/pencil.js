@@ -7,22 +7,32 @@ Template.toolbar.events({
 Template.main.events({
 	'mousedown #mainCanvas': function(event) {
 		if(Session.get('mode')==='pencil') {
-			pencil.drawingStarted = true;
-			pencil.addCoord(event);
+			pencil.startDrawing(event);
 		}
 	},
 	'mousemove #mainCanvas': function(event) {
 		pencil.addCoord(event);
 	},
 	'mouseup #mainCanvas': function(event) {
-		pencil.addCoord(event);
-		pencil.drawingStarted = false;
+		pencil.stopDrawing(event);
 	}
 });
 
 var pencil = {
 	drawingStarted: false,
 	coords: [],
+	startDrawing: function(mouseEvent) {
+		this.drawingStarted = true;
+		this.addCoord(mouseEvent);
+	},
+	stopDrawing: function(mouseEvent) {
+		this.addCoord(mouseEvent);
+		this.drawingStarted = false;
+		Shapes.insert({
+			coords: this.coords
+		});
+		this.coords = [];
+	},
 	addCoord: function(mouseEvent) {
 		if(this.drawingStarted) {
 			var newCoord = {
@@ -31,8 +41,6 @@ var pencil = {
 			};
 
 			this.coords.push(newCoord);
-
-			console.log(newCoord);
 		}
 	}
 };
