@@ -25,7 +25,7 @@ Template.main.rendered = function() {
     drawEdges();
     drawNodes();
     drawNodeText();
-//    drawShapes();
+    drawShapes();
 };
 
 CollabCanvas =
