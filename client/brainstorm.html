@@ -13,6 +13,7 @@
     <div id="wrapper">
 		<canvas id="mainCanvas" width="{{getWindowWidth}}" height="{{getWindowHeight}}"/>
 	</div>
+	{{> chat}}
 </template>
 
 <template name="toolbar">
@@ -28,5 +29,21 @@
 		<input type="text" id="ideaInputText" /><br/>
 		<button id="ideaInputCancel">Cancel</button>
 		<button id="ideaInputSubmit">Add Idea</button>
+	</div>
+</template>
+
+<template name="chat">
+	<div id="chatbox" class="">
+		<div id="chatstream">
+			{{#each messages}}
+			<div class="msg">
+				<div class="msgdate">{{formatDate}}</div>
+				<div class="msgtext">{{text}}</div>
+			</div>
+			{{/each}}
+		</div>
+		<div id="inputbox" class="">
+			<input id="inputtext" class="form-control" placeholder="Write something..." />
+		</div>
 	</div>
 </template>

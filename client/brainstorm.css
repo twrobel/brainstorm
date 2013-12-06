@@ -1,10 +1,13 @@
+* {
+	box-sizing: border-box;
+}
+
 body{
     background-color: black;
 }
 
 #wrapper {
 	padding: 30px;
-	box-sizing: border-box;
 }
 
 #mainCanvas {
@@ -36,4 +39,63 @@ body{
 
 #clearCanvas {
     float: right;
+}
+
+#chatbox {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	height: 200px;
+	width: 200px;
+}
+
+#inputbox {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 60px;
+	background-color: #f5f5f5;
+	width: 200px;
+	padding: 12px;
+}
+
+#inputbox input {
+
+}
+
+#chatstream {
+	max-height: 200px;
+	overflow: auto;
+	width: 200px;
+	position: absolute;
+	left:0;
+	bottom: 60px;
+	-webkit-border-top-left-radius: 12px;
+	-webkit-border-top-right-radius: 12px;
+	-moz-border-radius-topleft: 12px;
+	-moz-border-radius-topright: 12px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	padding: 12px;
+}
+
+#chatbox, #chatstream {
+	background-color: white;
+}
+
+#chatstream, #inputbox {
+	border-top: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+}
+
+#chatstream, #chatbox {
+	box-shadow: 0 0 12px;
+}
+
+.msgdate {
+	font-size: 80%;
+}
+
+.msgtext {
+	
 }
