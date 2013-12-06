@@ -13,26 +13,25 @@ Template.main.getWindowWidth = function() {
 
 Template.main.rendered = function() {
     drawNodes();
+    drawEdges();
 	drawShapes();
 };
 
-function drawNodes() {
-    var nodes = IdeaNodes.find();
+function getCanvasContext() {
     var context = $("#mainCanvas")[0].getContext("2d");
     context.lineWidth = 1;
-    //context.strokeWeight = 1;
     context.strokeStyle = 'black';
+    context.font = "normal 16px Arial";
+    return context;
+}
 
-    console.log("nodes:" + nodes.count());
+function drawNodes() {
+    var nodes = IdeaNodes.find();
+
+    var context = getCanvasContext();
     nodes.forEach(function (node) {
-        console.log("render node");
 
-        console.log("x:" + node.position[0]);
-        console.log("y:" + node.position[1]);
-        console.log("w:" + node.width);
-        console.log("h:" + node.height);
         //render the text within the square
-        context.font = "normal 16px Arial";
         var boxPadding = 30;
         var textSize = context.measureText(node.text);
         context.fillText(node.text,node.position[0], node.position[1]+((boxPadding/2)+(boxPadding/4)));
@@ -40,6 +39,23 @@ function drawNodes() {
         context.rect(node.position[0] - boxPadding/2, node.position[1], textSize.width + boxPadding, boxPadding);
         context.stroke();
     });
+}
+
+function drawEdges() {
+    var edges = IdeaEdges.find();
+    var context = getCanvasContext();
+
+    edges.forEach(function (edge) {
+       console.log("render edge");
+       var node1 = IdeaNodes.findOne(edge.node1);
+       var node2 = IdeaNodes.findOne(edge.node2);
+
+       context.beginPath();
+       context.moveTo(node1.position[0], node1.position[1]);
+       context.lineTo(node2.position[0], node2.position[1]);
+       context.stroke();
+    });
+
 }
 
 function drawShapes() {
