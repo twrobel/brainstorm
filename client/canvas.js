@@ -4,47 +4,73 @@ Template.main.doNothing = function() {
 };
 
 Template.main.getWindowHeight = function() {
-	return $(window).height();
+	return $(window).height()-60;
 };
 
 Template.main.getWindowWidth = function() {
-	return $(window).width();
+	return $(window).width()-60;
 };
 
 Template.main.rendered = function() {
     drawNodes();
+    drawEdges();
 	drawShapes();
 };
 
-function drawNodes() {
-    var nodes = IdeaNodes.find();
+CollabCanvas =
+{
+    boxPadding: 30
+};
+
+function getCanvasContext() {
     var context = $("#mainCanvas")[0].getContext("2d");
     context.lineWidth = 1;
-    //context.strokeWeight = 1;
     context.strokeStyle = 'black';
+    context.font = "normal 16px Arial";
+    return context;
+}
 
-    console.log("nodes:" + nodes.count());
+function drawNodes() {
+    var nodes = IdeaNodes.find();
+
+    var context = getCanvasContext();
     nodes.forEach(function (node) {
-        console.log("render node");
-        console.log("x:" + node.position[0]);
-        console.log("y:" + node.position[1]);
-        console.log("w:" + node.width);
-        console.log("h:" + node.height);
-        //render the text within the square
-        context.font = "normal 16px Arial";
-        var boxPadding = 30;
-        var textSize = context.measureText(node.text);
-        context.fillText(node.text,node.position[0], node.position[1]+((boxPadding/2)+(boxPadding/4)));
 
-		var rectX = node.position[0] - boxPadding / 2;
-		var rectY = node.position[1];
-		var rectW = textSize.width + boxPadding;
-		var rectH = boxPadding;
-		node.rectCoords = [rectX, rectY, rectX + rectW, rectY + rectH];
-		console.log(node.rectCoords);
-		context.rect(rectX, rectY, rectW, rectH);
+        //render the text within the square
+        var textSize = context.measureText(node.text);
+        context.fillText(node.text,node.position[0], node.position[1]+((CollabCanvas.boxPadding/2)+(CollabCanvas.boxPadding/4)));
+
+        context.rect(node.position[0] - CollabCanvas.boxPadding/2, node.position[1], textSize.width + CollabCanvas.boxPadding, CollabCanvas.boxPadding);
         context.stroke();
     });
+}
+
+function drawEdges() {
+    var edges = IdeaEdges.find();
+    var context = getCanvasContext();
+
+    edges.forEach(function (edge) {
+       console.log("render edge");
+       var node1 = IdeaNodes.findOne(edge.node1);
+       var node2 = IdeaNodes.findOne(edge.node2);
+
+       //determine start node
+        var startNode;
+        var endNode;
+        if(node1.position[1] < node2.position[1]) {
+           startNode =  node1;
+           endNode = node2;
+        } else {
+           startNode =  node2;
+           endNode = node1;
+        }
+
+       context.beginPath();
+       context.moveTo(startNode.position[0], startNode.position[1] + CollabCanvas.boxPadding);
+       context.lineTo(endNode.position[0], endNode.position[1]);
+       context.stroke();
+    });
+
 }
 
 function drawShapes() {
