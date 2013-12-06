@@ -99,6 +99,8 @@ function drawEdges() {
     var edges = IdeaEdges.find();
     var context = getCanvasContext();
 
+    var lastCoord;
+
     edges.forEach(function (edge) {
        var node1 = IdeaNodes.findOne(edge.node1);
        var node2 = IdeaNodes.findOne(edge.node2);
@@ -114,7 +116,15 @@ function drawEdges() {
         context.lineTo(endPointCoordinate.midpoint().x, endPointCoordinate.midpoint().y);
 
         context.stroke();
+
+        lastCoord = endPointCoordinate.midpoint();
     });
+
+	context.beginPath();
+	context.moveTo(lastCoord.x, lastCoord.y);
+    context.lineTo(lastCoord.x+1, lastCoord.y+1);
+
+    context.stroke();
 
 }
 
