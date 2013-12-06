@@ -35,23 +35,21 @@ Template.main.rendered = function() {
 function drawShapes() {
 	var shapes_cursor = Shapes.find();
 
+	shapes_cursor.forEach(function(shape) {
+		drawShape(shape.coords);
+	});
+}
+
+function drawShape(coords) {
 	var context = $("#mainCanvas")[0].getContext("2d");
 
-	//debugger;
+	pencil.setupContext(context);
 
-	shapes_cursor.forEach(function(shape) {
-		context.beginPath();
-		context.lineWidth = '1';
-		context.strokeStyle = 'red';
+	context.moveTo(coords[0].x, coords[0].y);
 
-		var coords = shape.coords;
+	for(var i=1; i<coords.length; i++) {
+		context.lineTo(coords[i].x, coords[i].y);
+	}
 
-		context.moveTo(coords[0].x, coords[0].y);
-
-		for(var i=1; i<coords.length; i++) {
-			context.lineTo(coords[i].x, coords[i].y);
-		}
-
-		context.stroke();
-	});
+	context.stroke();
 }
