@@ -20,10 +20,18 @@ Template.toolbar.events({
 })
 
 function createNode(coord) {
+	isEditMode = false;
 	toggleModal();
 	newIdeaNode = {
 		position: [coord.x, coord.y]
 	};
+}
+
+function editNode(nodeId){
+	isEditMode = true;
+	newIdeaNode = IdeaNodes.findOne({_id: nodeId})
+	$('#ideaInputText').val(newIdeaNode.text);
+	toggleModal();
 }
 
 Template.main.events({
@@ -51,7 +59,9 @@ function takeAction(mouseUpCoord){
 	var startId = canvasDragEvent.startNodeId;
 	var endId = canvasDragEvent.endNodeId;
 	if(startId && endId){
-		if(startId !== endId){
+		if(startId === endId){
+			editNode(startId);
+		}else{
 			createEdge(startId, endId);
 		}
 	}else if(startId && !endId){
@@ -86,11 +96,14 @@ Template.ideaInput.events({
 		if(ideaText){
 			newIdeaNode.text = ideaText;
 			newIdeaNode.shortText = shortenText(ideaText);
-			setIdeaNodeDimensions();
-			saveIdeaNode();
-			closeIdeaModal();
-			linkNodeIfNecessary();
+			if(!isEditMode){
+				saveIdeaNode();
+				linkNodeIfNecessary();
+			}else{
+				updateIdeaNode();
+			}
 			newIdeaNode = {};
+			closeIdeaModal();
 		}
 	},
 	'click #ideaInputCancel': function(){
@@ -121,13 +134,17 @@ function shortenText(text){
 	return text.length > 20 ? text.substring(0, 20) + " ..." : text;
 }
 
-function setIdeaNodeDimensions(){
-	newIdeaNode.height = 100;
-	newIdeaNode.width = 100;
-}
-
 function saveIdeaNode(){
 	newIdeaNode._id = IdeaNodes.insert(newIdeaNode);
+}
+
+function updateIdeaNode(){
+
+	IdeaNodes.update({_id: newIdeaNode._id},
+		{$set: {
+			text: newIdeaNode.text,
+			shortText: newIdeaNode.shortText
+		}})
 }
 
 function toggleModal(){
