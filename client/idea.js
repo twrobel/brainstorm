@@ -1,5 +1,6 @@
 var newIdeaNode = {};
 var canvasDragEvent = {startNodeId: undefined, endNodeId: undefined};
+var linkFrom;//when node created, this is the id is should be linked to
 
 Template.toolbar.events({
 	'click #ideaModeSelector': function(){
@@ -18,31 +19,61 @@ Template.toolbar.events({
 	}
 })
 
+function createNode(coord) {
+	toggleModal();
+	newIdeaNode = {
+		position: [coord.x, coord.y]
+	};
+}
+
 Template.main.events({
-	'click #mainCanvas': function(event, target){
-		if(Session.get('mode') === 'idea'){
-			var coord = util.extractClickCoordinates(event);
-			toggleModal();
-			newIdeaNode = {
-				position: [coord.x, coord.y]
-			};
-		}
-	},
 	'mousedown #mainCanvas': function(event, target){
 		if(Session.get('mode') === 'idea'){
 			var coord = util.extractClickCoordinates(event);
 			var node = getContainingNode(coord);
+
+			canvasDragEvent.startNodeId = node ? node._id : undefined;
+		}
+	},
+	'mouseup #mainCanvas': function(event, target){
+		if(Session.get('mode') === 'idea'){
+			var coord = util.extractClickCoordinates(event);
+			var node = getContainingNode(coord);
+
+			canvasDragEvent.endNodeId = node ? node._id : undefined;
+
+			takeAction(coord);
 		}
 	}
 })
 
-function getContainingNode(coords) {
-	return IdeaNodes.findOne(
-		{"rectCoords[0]": {$lte: coords.x}},
-		{"rectCoords[1]": {$lte: coords.y}},
-		{"rectCoords[2]": {$gte: coords.x}},
-		{"rectCoords[3]": {$gte: coords.y}});
+function takeAction(mouseUpCoord){
+	var startId = canvasDragEvent.startNodeId;
+	var endId = canvasDragEvent.endNodeId;
+	if(startId && endId){
+		if(startId !== endId){
+			createEdge(startId, endId);
+		}
+	}else if(startId && !endId){
+		createNode(mouseUpCoord);
+		linkFrom = startId;
+	}else if(!startId && !endId){
+		createNode(mouseUpCoord);
+	}
+}
 
+function getContainingNode(coords, callback) {
+	var result;
+	IdeaNodes.find({}).forEach(function(node){
+		if(node.rectCoords[0] <= coords.x
+			&& node.rectCoords[1] <= coords.y
+			&& node.rectCoords[2] >= coords.x
+			&& node.rectCoords[3] >= coords.y){
+
+			result = node;
+		}
+	});
+	return result;
 }
 
 function closeIdeaModal() {
@@ -58,6 +89,8 @@ Template.ideaInput.events({
 			setIdeaNodeDimensions();
 			saveIdeaNode();
 			closeIdeaModal();
+			linkNodeIfNecessary();
+			newIdeaNode = {};
 		}
 	},
 	'click #ideaInputCancel': function(){
@@ -65,6 +98,24 @@ Template.ideaInput.events({
 	}
 
 })
+
+function linkNodeIfNecessary(){
+	if(linkFrom){
+		createEdge(linkFrom, newIdeaNode._id);
+	}
+	linkFrom = undefined;
+}
+
+function createEdge(id1, id2){
+	if(!id1 || !id2){
+		console.log("KABOOOM");
+	}
+	var newEdge = {
+		node1: id1,
+		node2: id2
+	};
+	IdeaEdges.insert(newEdge);
+}
 
 function shortenText(text){
 	return text.length > 20 ? text.substring(0, 20) + " ..." : text;
@@ -76,8 +127,7 @@ function setIdeaNodeDimensions(){
 }
 
 function saveIdeaNode(){
-	IdeaNodes.insert(newIdeaNode);
-	newIdeaNode = {};
+	newIdeaNode._id = IdeaNodes.insert(newIdeaNode);
 }
 
 function toggleModal(){

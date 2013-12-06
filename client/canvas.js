@@ -1,5 +1,6 @@
 Template.main.doNothing = function() {
 	Shapes.find().count();
+	IdeaEdges.find().count();
     return IdeaNodes.find().count();
 };
 
