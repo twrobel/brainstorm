@@ -12,9 +12,15 @@ Template.main.getWindowWidth = function() {
 };
 
 Template.main.rendered = function() {
+    drawNodes();
+	drawShapes();
+};
+
+function drawNodes() {
     var nodes = IdeaNodes.find();
     var context = $("#mainCanvas")[0].getContext("2d");
-    context.lineWidth = 2;
+    context.lineWidth = 1;
+    //context.strokeWeight = 1;
     context.strokeStyle = 'black';
 
     console.log("nodes:" + nodes.count());
@@ -25,12 +31,13 @@ Template.main.rendered = function() {
         console.log("y:" + node.position[1]);
         console.log("w:" + node.width);
         console.log("h:" + node.height);
-        context.rect(node.position[0], node.position[1], node.width, node.height);
+        context.rect(node.position[0], node.position[1], node.nodeWidth, node.nodeHeight);
         context.stroke();
+        //render the text within the square
+        context.font = "normal 16px Arial";
+        context.fillText(node.text,node.position[0], node.position[1]);
     });
-
-	drawShapes();
-};
+}
 
 function drawShapes() {
 	var shapes_cursor = Shapes.find();
