@@ -4,11 +4,11 @@ Template.main.doNothing = function() {
 };
 
 Template.main.getWindowHeight = function() {
-	return $(window).height();
+	return $(window).height()-60;
 };
 
 Template.main.getWindowWidth = function() {
-	return $(window).width();
+	return $(window).width()-60;
 };
 
 Template.main.rendered = function() {

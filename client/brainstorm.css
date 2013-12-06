@@ -2,12 +2,16 @@ body{
     background-color: black;
 }
 
+#wrapper {
+	padding: 30px;
+	box-sizing: border-box;
+}
+
 #mainCanvas {
     background-color: white;
     box-shadow: 0px 0px 50px #ccf;
     border-radius: 10px 10px;
-    margin: 30px;
-    width: 90%;
+    width: 100%;
 }
 
 #toolbar{
