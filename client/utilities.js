@@ -1,5 +1,5 @@
 util = {
-	extractClickCoordinates: function(e, canvas){
+	extractClickCoordinates: function(e){
 		var x;
 		var y;
 		if (e.pageX || e.pageY) {
@@ -10,12 +10,8 @@ util = {
 			x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
 			y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 		}
-		x -= canvas.offsetLeft;
-		y -= canvas.offsetTop;
-
-		/*x += parseInt($(canvas).css('margin-left').replace('px',''));
-		y += parseInt($(canvas).css('margin-top').replace('px',''));*/
-
+		x -= e.currentTarget.offsetLeft;
+		y -= e.currentTarget.offsetTop;
 		return {
 			x: x,
 			y: y

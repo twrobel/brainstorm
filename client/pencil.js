@@ -67,7 +67,7 @@ pencil = {
 		}
 	},
 	getTransformedCoord: function(mouseEvent) {
-		return util.extractClickCoordinates(mouseEvent, document.getElementById('mainCanvas'));
+		return util.extractClickCoordinates(mouseEvent);
 	}
 };
 

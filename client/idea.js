@@ -21,7 +21,7 @@ Template.toolbar.events({
 Template.main.events({
 	'click #mainCanvas': function(event, target){
 		if(Session.get('mode') === 'idea'){
-			var coord = extractClickCoordinates(event);
+			var coord = util.extractClickCoordinates(event);
 			toggleModal();
 			console.log(coord)
 			newIdeaNode = {
@@ -32,7 +32,7 @@ Template.main.events({
 	'mousedown #mainCanvas': function(event, target){
 		if(Session.get('mode') === 'idea'){
 			console.log('mouseDown');
-			var coord = extractClickCoordinates(event);
+			var coord = util.extractClickCoordinates(event);
 			var node = getContainingNode(coord);
 			console.log("clicked on: ");
 			console.log(node);
@@ -96,21 +96,3 @@ function toggleModal(){
 	$('#ideaInput').modal('toggle');
 }
 
-function extractClickCoordinates(e){
-	var x;
-	var y;
-	if (e.pageX || e.pageY) {
-		x = e.pageX;
-		y = e.pageY;
-	}
-	else {
-		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-	}
-	x -= e.currentTarget.offsetLeft;
-	y -= e.currentTarget.offsetTop;
-	return {
-		x: x,
-		y: y
-	}
-}
