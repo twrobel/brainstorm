@@ -1,1 +1,4 @@
-/* CSS declarations go here */
+#mainCanvas {
+    width:100%;
+    height:100%;
+}
