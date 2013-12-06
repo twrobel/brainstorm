@@ -4,11 +4,14 @@ Template.main.doNothing = function() {
 };
 
 Template.main.getWindowHeight = function() {
-	return $(window).height()-60;
+	var toolbarHeight = $('#toolbar').outerHeight();
+	var windowHeight = $(window).height();
+	var height = windowHeight-60-toolbarHeight;
+	return height;
 };
 
 Template.main.getWindowWidth = function() {
-	return $(window).width()-60;
+	return $(window).width()-60-200;
 };
 
 Template.main.rendered = function() {
