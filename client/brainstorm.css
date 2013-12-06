@@ -9,7 +9,9 @@
 }
 
 #ideaInput{
-    background-color: #6666ff;
+    background-color: #666666;
     width:200px;
     height:100px;
+    margin: auto;
+
 }

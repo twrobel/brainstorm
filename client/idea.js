@@ -19,15 +19,21 @@ Template.main.events({
 	}
 })
 
+function closeIdeaModal() {
+	toggleModal();
+	$('#ideaInputText').val('');
+}
 Template.ideaInput.events({
 	'click #ideaInputSubmit': function(){
 		var ideaText = $('#ideaInputText').val();
-
 		if(ideaText){
-			toggleModal();
 			newIdeaNode.text = ideaText;
 			saveIdeaNode();
+			closeIdeaModal();
 		}
+	},
+	'click #ideaInputCancel': function(){
+		closeIdeaModal();
 	}
 })
 
