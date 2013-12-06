@@ -26,7 +26,6 @@ function drawNodes() {
     console.log("nodes:" + nodes.count());
     nodes.forEach(function (node) {
         console.log("render node");
-
         console.log("x:" + node.position[0]);
         console.log("y:" + node.position[1]);
         console.log("w:" + node.width);
@@ -37,7 +36,13 @@ function drawNodes() {
         var textSize = context.measureText(node.text);
         context.fillText(node.text,node.position[0], node.position[1]+((boxPadding/2)+(boxPadding/4)));
 
-        context.rect(node.position[0] - boxPadding/2, node.position[1], textSize.width + boxPadding, boxPadding);
+		var rectX = node.position[0] - boxPadding / 2;
+		var rectY = node.position[1];
+		var rectW = textSize.width + boxPadding;
+		var rectH = boxPadding;
+		node.rectCoords = [rectX, rectY, rectX + rectW, rectY + rectH];
+		console.log(node.rectCoords);
+		context.rect(rectX, rectY, rectW, rectH);
         context.stroke();
     });
 }
