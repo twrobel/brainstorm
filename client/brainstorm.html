@@ -3,9 +3,16 @@
 </head>
 
 <body>
-  {{> main}}
+	{{> toolbar}}
+	{{> main}}
 </body>
 
 <template name="main">
 	<canvas id="mainCanvas"/>
+</template>
+
+<template name="toolbar">
+	<div id="toolbar">
+		<button id="ideaModeSelector">Idea Mode</button>
+	</div>
 </template>
