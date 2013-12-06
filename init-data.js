@@ -9,8 +9,6 @@ Shapes = new Meteor.Collection('Shapes');
 if(Meteor.isServer && IdeaNodes.find().count() == 0) {
     var ideaNode = {
         position:[10,10],
-        width: 100,
-        height: 100,
         text:'Sample Idea Node'
     };
 
