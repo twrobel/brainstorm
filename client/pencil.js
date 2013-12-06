@@ -18,11 +18,30 @@ Template.main.events({
 	}
 });
 
-var pencil = {
+pencil = {
 	drawingStarted: false,
 	coords: [],
+	offset: {
+		x: 0,
+		y: 0
+	},
+	context: null,
+
+	setupContext: function(ctx) {
+		ctx.beginPath();
+		ctx.lineWidth = '1';
+		ctx.strokeStyle = 'red';
+	},
+
 	startDrawing: function(mouseEvent) {
 		this.drawingStarted = true;
+		var canvasEl = $('#mainCanvas')[0];
+		this.offset.x = canvasEl.offsetLeft;
+		this.offset.y = canvasEl.offsetTop;
+		this.context = canvasEl.getContext("2d");
+		this.setupContext(this.context);
+		var start = this.getTransformedCoord(mouseEvent);
+		this.context.moveTo(start.x, start.y);
 		this.addCoord(mouseEvent);
 	},
 	stopDrawing: function(mouseEvent) {
@@ -37,13 +56,21 @@ var pencil = {
 	},
 	addCoord: function(mouseEvent) {
 		if(this.drawingStarted) {
-			var newCoord = {
-				x: mouseEvent.clientX,
-				y: mouseEvent.clientY
-			};
+			
+			var newCoord = this.getTransformedCoord(mouseEvent);
 
 			this.coords.push(newCoord);
+
+			this.context.lineTo(newCoord.x, newCoord.y);
+
+			this.context.stroke();
 		}
+	},
+	getTransformedCoord: function(mouseEvent) {
+		return {
+				x: mouseEvent.clientX-this.offset.x,
+				y: mouseEvent.clientY-this.offset.y
+			};
 	}
 };
 

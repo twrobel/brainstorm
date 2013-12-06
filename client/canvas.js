@@ -31,34 +31,35 @@ function drawNodes() {
         console.log("y:" + node.position[1]);
         console.log("w:" + node.width);
         console.log("h:" + node.height);
-        context.rect(node.position[0], node.position[1], node.nodeWidth, node.nodeHeight);
-        context.stroke();
         //render the text within the square
         context.font = "normal 16px Arial";
-        context.fillText(node.text,node.position[0], node.position[1]);
+        var boxPadding = 30;
+        var textSize = context.measureText(node.text);
+        context.fillText(node.text,node.position[0], node.position[1]+((boxPadding/2)+(boxPadding/4)));
+
+        context.rect(node.position[0] - boxPadding/2, node.position[1], textSize.width + boxPadding, boxPadding);
+        context.stroke();
     });
 }
 
 function drawShapes() {
 	var shapes_cursor = Shapes.find();
 
+	shapes_cursor.forEach(function(shape) {
+		drawShape(shape.coords);
+	});
+}
+
+function drawShape(coords) {
 	var context = $("#mainCanvas")[0].getContext("2d");
 
-	//debugger;
+	pencil.setupContext(context);
 
-	shapes_cursor.forEach(function(shape) {
-		context.beginPath();
-		context.lineWidth = '1';
-		context.strokeStyle = 'red';
+	context.moveTo(coords[0].x, coords[0].y);
 
-		var coords = shape.coords;
+	for(var i=1; i<coords.length; i++) {
+		context.lineTo(coords[i].x, coords[i].y);
+	}
 
-		context.moveTo(coords[0].x, coords[0].y);
-
-		for(var i=1; i<coords.length; i++) {
-			context.lineTo(coords[i].x, coords[i].y);
-		}
-
-		context.stroke();
-	});
+	context.stroke();
 }
