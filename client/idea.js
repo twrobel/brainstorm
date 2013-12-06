@@ -23,7 +23,6 @@ Template.main.events({
 		if(Session.get('mode') === 'idea'){
 			var coord = util.extractClickCoordinates(event);
 			toggleModal();
-			console.log(coord)
 			newIdeaNode = {
 				position: [coord.x, coord.y]
 			};
@@ -31,26 +30,18 @@ Template.main.events({
 	},
 	'mousedown #mainCanvas': function(event, target){
 		if(Session.get('mode') === 'idea'){
-			console.log('mouseDown');
 			var coord = util.extractClickCoordinates(event);
 			var node = getContainingNode(coord);
-			console.log("clicked on: ");
-			console.log(node);
 		}
 	}
 })
 
 function getContainingNode(coords) {
-	console.log(IdeaNodes.findOne({}));
 	return IdeaNodes.findOne({
 		"rectCoords[0]": {$lte: 1000},
 		"rectCoords[1]": {$lte: 1000},
 		"rectCoords[2]": {$gte: 0},
 		"rectCoords[3]": {$gte: 0}});
-	//"rectCoords[0]": {$lte: coords.x},
-//		"rectCoords[1]": {$lte: coords.y},
-//		"rectCoords[2]": {$gte: coords.x},
-//		"rectCoords[3]": {$gte: coords.y}});
 
 }
 
@@ -87,9 +78,6 @@ function setIdeaNodeDimensions(){
 function saveIdeaNode(){
 	IdeaNodes.insert(newIdeaNode);
 	newIdeaNode = {};
-	IdeaNodes.find().forEach(function(idea){
-		console.log(idea);
-	})
 }
 
 function toggleModal(){

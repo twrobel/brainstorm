@@ -50,7 +50,6 @@ function drawEdges() {
     var context = getCanvasContext();
 
     edges.forEach(function (edge) {
-       console.log("render edge");
        var node1 = IdeaNodes.findOne(edge.node1);
        var node2 = IdeaNodes.findOne(edge.node2);
 
