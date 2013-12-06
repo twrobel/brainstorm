@@ -40,9 +40,22 @@ function drawNodes() {
         var textSize = context.measureText(node.text);
         context.fillText(node.text,node.position[0], node.position[1]+((CollabCanvas.boxPadding/2)+(CollabCanvas.boxPadding/4)));
 
-        context.rect(node.position[0] - CollabCanvas.boxPadding/2, node.position[1], textSize.width + CollabCanvas.boxPadding, CollabCanvas.boxPadding);
+		var rectX = node.position[0] - CollabCanvas.boxPadding/2;
+		var rectY = node.position[1];
+		var rectW = textSize.width + CollabCanvas.boxPadding;
+		var rectH = CollabCanvas.boxPadding;
+
+		addRectParamsToNode(node, rectX, rectY, rectW, rectH);
+		context.rect(rectX, rectY, rectW, rectH);
         context.stroke();
     });
+}
+
+function addRectParamsToNode(node, rectX, rectY, rectW, rectH){
+	IdeaNodes.update({_id: node._id},
+		{ $set: {
+			rectCoords: [rectX, rectY, rectX + rectW, rectY + rectH]
+		}})
 }
 
 function drawEdges() {

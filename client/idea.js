@@ -37,11 +37,11 @@ Template.main.events({
 })
 
 function getContainingNode(coords) {
-	return IdeaNodes.findOne({
-		"rectCoords[0]": {$lte: 1000},
-		"rectCoords[1]": {$lte: 1000},
-		"rectCoords[2]": {$gte: 0},
-		"rectCoords[3]": {$gte: 0}});
+	return IdeaNodes.findOne(
+		{"rectCoords[0]": {$lte: coords.x}},
+		{"rectCoords[1]": {$lte: coords.y}},
+		{"rectCoords[2]": {$gte: coords.x}},
+		{"rectCoords[3]": {$gte: coords.y}});
 
 }
 
