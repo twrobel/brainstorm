@@ -1,6 +1,15 @@
 Template.main.doNothing = function() {
+	Shapes.find().count();
     return IdeaNodes.find().count();
-}
+};
+
+Template.main.getWindowHeight = function() {
+	return $(window).height();
+};
+
+Template.main.getWindowWidth = function() {
+	return $(window).width();
+};
 
 Template.main.rendered = function() {
     var nodes = IdeaNodes.find();
