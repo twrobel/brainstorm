@@ -17,6 +17,11 @@ Template.main.rendered = function() {
 	drawShapes();
 };
 
+CollabCanvas =
+{
+    boxPadding: 30
+};
+
 function getCanvasContext() {
     var context = $("#mainCanvas")[0].getContext("2d");
     context.lineWidth = 1;
@@ -32,11 +37,10 @@ function drawNodes() {
     nodes.forEach(function (node) {
 
         //render the text within the square
-        var boxPadding = 30;
         var textSize = context.measureText(node.text);
-        context.fillText(node.text,node.position[0], node.position[1]+((boxPadding/2)+(boxPadding/4)));
+        context.fillText(node.text,node.position[0], node.position[1]+((CollabCanvas.boxPadding/2)+(CollabCanvas.boxPadding/4)));
 
-        context.rect(node.position[0] - boxPadding/2, node.position[1], textSize.width + boxPadding, boxPadding);
+        context.rect(node.position[0] - CollabCanvas.boxPadding/2, node.position[1], textSize.width + CollabCanvas.boxPadding, CollabCanvas.boxPadding);
         context.stroke();
     });
 }
@@ -50,9 +54,20 @@ function drawEdges() {
        var node1 = IdeaNodes.findOne(edge.node1);
        var node2 = IdeaNodes.findOne(edge.node2);
 
+       //determine start node
+        var startNode;
+        var endNode;
+        if(node1.position[1] < node2.position[1]) {
+           startNode =  node1;
+           endNode = node2;
+        } else {
+           startNode =  node2;
+           endNode = node1;
+        }
+
        context.beginPath();
-       context.moveTo(node1.position[0], node1.position[1]);
-       context.lineTo(node2.position[0], node2.position[1]);
+       context.moveTo(startNode.position[0], startNode.position[1] + CollabCanvas.boxPadding);
+       context.lineTo(endNode.position[0], endNode.position[1]);
        context.stroke();
     });
 
