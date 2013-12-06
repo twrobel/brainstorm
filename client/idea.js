@@ -75,10 +75,11 @@ function takeAction(mouseUpCoord){
 function getContainingNode(coords, callback) {
 	var result;
 	IdeaNodes.find({}).forEach(function(node){
-		if(node.rectCoords[0] <= coords.x
-			&& node.rectCoords[1] <= coords.y
-			&& node.rectCoords[2] >= coords.x
-			&& node.rectCoords[3] >= coords.y){
+		var nodeCoords = deriveNodeCoordinates(node);
+		if(nodeCoords.x1 <= coords.x
+			&& nodeCoords.y1 <= coords.y
+			&& nodeCoords.x2 >= coords.x
+			&& nodeCoords.y2 >= coords.y){
 
 			result = node;
 		}

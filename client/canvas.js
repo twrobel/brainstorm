@@ -33,6 +33,35 @@ CollabCanvas =
     boxPadding: 30
 };
 
+deriveNodeCoordinates = function(node) {
+	var context = getCanvasContext();
+	var textSize = context.measureText(node.text);
+	var x1 = node.position[0] - CollabCanvas.boxPadding/2;
+	var y1 = node.position[1];
+	var width=textSize.width + CollabCanvas.boxPadding;
+	var height = CollabCanvas.boxPadding;
+	var x2 = x1 + width;
+	var y2 = y1 + height;
+	return {
+		x1:x1,
+		y1:y1,
+		width:width,
+		height:height,
+		x2: x2,
+		y2: y2,
+		midpoint: function() {
+			return {
+				x: ((this.x1 + this.x2) / 2),
+				y: ((this.y1 + this.y2) / 2)
+			};
+		},
+		toString: function(){
+			var point = this.midpoint();
+			return [this.x1,this.y1,this.x2,this.y2] + "==> (" + point.x + "," + point.y + ")";
+		}
+	}
+}
+
 function getCanvasContext() {
     var context = $("#mainCanvas")[0].getContext("2d");
 
@@ -64,36 +93,6 @@ function drawNodeText() {
         context.fillText(node.text,node.position[0], node.position[1]+((CollabCanvas.boxPadding/2)+(CollabCanvas.boxPadding/4)));
     });
 }
-
-function deriveNodeCoordinates(node) {
-    var context = getCanvasContext();
-    var textSize = context.measureText(node.text);
-    var x1 = node.position[0] - CollabCanvas.boxPadding/2;
-    var y1 = node.position[1];
-    var width=textSize.width + CollabCanvas.boxPadding;
-    var height = CollabCanvas.boxPadding;
-    var x2 = x1 + width;
-    var y2 = y1 + height;
-    return {
-        x1:x1,
-        y1:y1,
-        width:width,
-        height:height,
-        x2: x2,
-        y2: y2,
-        midpoint: function() {
-            return {
-                x: ((this.x1 + this.x2) / 2),
-                y: ((this.y1 + this.y2) / 2)
-            };
-        },
-        toString: function(){
-            var point = this.midpoint();
-            return [this.x1,this.y1,this.x2,this.y2] + "==> (" + point.x + "," + point.y + ")";
-        }
-    }
-}
-
 
 function drawEdges() {
     console.log("fu fucking bar");
