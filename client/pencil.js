@@ -26,12 +26,14 @@ var pencil = {
 		this.addCoord(mouseEvent);
 	},
 	stopDrawing: function(mouseEvent) {
-		this.addCoord(mouseEvent);
-		this.drawingStarted = false;
-		Shapes.insert({
-			coords: this.coords
-		});
-		this.coords = [];
+		if(this.drawingStarted) {
+			this.addCoord(mouseEvent);
+			this.drawingStarted = false;
+			Shapes.insert({
+				coords: this.coords
+			});
+			this.coords = [];
+		}
 	},
 	addCoord: function(mouseEvent) {
 		if(this.drawingStarted) {
