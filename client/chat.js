@@ -3,7 +3,11 @@ Template.chat.messages = function() {
 };
 
 Template.chat.formatDate = function() {
-	return moment(this.date).format("dddd, MMMM Do YYYY, h:mm:ss a");
+	return moment(this.date).format("MMM Do YYYY, h:mm:ss a");
+}
+
+Template.chat.getHeight = function() {
+	return $(window).height()-$('#toolbar').outerHeight()-$('#inputbox').outerHeight()-30;
 }
 
 Template.chat.events({
@@ -16,3 +20,8 @@ Template.chat.events({
 		$('#inputtext').val('');
 	}
 });
+
+Template.chat.rendered = function() {
+	var el = $('#chatstream')[0];
+	el.scrollTop = el.scrollHeight;
+};

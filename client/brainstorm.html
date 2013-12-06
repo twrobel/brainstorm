@@ -9,7 +9,7 @@
 </body>
 
 <template name="main">
-    {{doNothing}}
+    <div style="display:none;">{{doNothing}}</div>
     <div id="wrapper">
 		<canvas id="mainCanvas" width="{{getWindowWidth}}" height="{{getWindowHeight}}"/>
 	</div>
@@ -33,8 +33,8 @@
 </template>
 
 <template name="chat">
-	<div id="chatbox" class="">
-		<div id="chatstream">
+	<div id="chatbox">
+		<div id="chatstream" style="max-height:{{getHeight}}px;">
 			{{#each messages}}
 			<div class="msg">
 				<div class="msgdate">{{formatDate}}</div>

@@ -14,7 +14,6 @@ body{
     background-color: white;
     box-shadow: 0px 0px 50px #ccf;
     border-radius: 10px 10px;
-    width: 100%;
 }
 
 #toolbar{
@@ -64,7 +63,6 @@ body{
 }
 
 #chatstream {
-	max-height: 200px;
 	overflow: auto;
 	width: 200px;
 	position: absolute;
@@ -89,13 +87,19 @@ body{
 }
 
 #chatstream, #chatbox {
-	box-shadow: 0 0 12px;
+    box-shadow: 0px 0px 50px #ccf;
+}
+
+.msg {
+	margin: 12px 0;
 }
 
 .msgdate {
 	font-size: 80%;
+	text-align: right;
+	color: #999;
 }
 
 .msgtext {
-	
+
 }

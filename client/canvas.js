@@ -6,17 +6,26 @@ Template.main.doNothing = function() {
 };
 
 Template.main.getWindowHeight = function() {
-	return $(window).height()-60;
+	var toolbarHeight = $('#toolbar').outerHeight();
+	var windowHeight = $(window).height();
+	var height = windowHeight-60-toolbarHeight;
+	return height;
 };
 
 Template.main.getWindowWidth = function() {
-	return $(window).width()-60;
+	return $(window).width()-60-200;
 };
 
 Template.main.rendered = function() {
-    drawNodes();
+    console.log("bar fucking fu");
+    var context = getCanvasContext();
+    var canvas = context.canvas;
+    context.clearRect(0,0,canvas.width, canvas.height);
+
     drawEdges();
-	drawShapes();
+    drawNodes();
+    drawNodeText();
+//    drawShapes();
 };
 
 CollabCanvas =
@@ -26,9 +35,11 @@ CollabCanvas =
 
 function getCanvasContext() {
     var context = $("#mainCanvas")[0].getContext("2d");
+
     context.lineWidth = 1;
     context.strokeStyle = 'black';
     context.font = "normal 16px Arial";
+    //
     return context;
 }
 
@@ -37,30 +48,55 @@ function drawNodes() {
 
     var context = getCanvasContext();
     nodes.forEach(function (node) {
-
-        //render the text within the square
-        var textSize = context.measureText(node.text);
-        context.fillText(node.text,node.position[0], node.position[1]+((CollabCanvas.boxPadding/2)+(CollabCanvas.boxPadding/4)));
-
-		var rectX = node.position[0] - CollabCanvas.boxPadding/2;
-		var rectY = node.position[1];
-		var rectW = textSize.width + CollabCanvas.boxPadding;
-		var rectH = CollabCanvas.boxPadding;
-
-		addRectParamsToNode(node, rectX, rectY, rectW, rectH);
-		context.rect(rectX, rectY, rectW, rectH);
+        var coordinates = deriveNodeCoordinates(node);
+        context.strokeStyle = 'black';
+        context.fillStyle = 'grey';
+        context.fillRect(coordinates.x1, coordinates.y1, coordinates.width, coordinates.height);
         context.stroke();
     });
 }
 
-function addRectParamsToNode(node, rectX, rectY, rectW, rectH){
-	IdeaNodes.update({_id: node._id},
-		{ $set: {
-			rectCoords: [rectX, rectY, rectX + rectW, rectY + rectH]
-		}})
+function drawNodeText() {
+    var nodes = IdeaNodes.find();
+    var context = getCanvasContext();
+    nodes.forEach(function (node) {
+        context.fillStyle = "black";
+        context.fillText(node.text,node.position[0], node.position[1]+((CollabCanvas.boxPadding/2)+(CollabCanvas.boxPadding/4)));
+    });
 }
 
+function deriveNodeCoordinates(node) {
+    var context = getCanvasContext();
+    var textSize = context.measureText(node.text);
+    var x1 = node.position[0] - CollabCanvas.boxPadding/2;
+    var y1 = node.position[1];
+    var width=textSize.width + CollabCanvas.boxPadding;
+    var height = CollabCanvas.boxPadding;
+    var x2 = x1 + width;
+    var y2 = y1 + height;
+    return {
+        x1:x1,
+        y1:y1,
+        width:width,
+        height:height,
+        x2: x2,
+        y2: y2,
+        midpoint: function() {
+            return {
+                x: ((this.x1 + this.x2) / 2),
+                y: ((this.y1 + this.y2) / 2)
+            };
+        },
+        toString: function(){
+            var point = this.midpoint();
+            return [this.x1,this.y1,this.x2,this.y2] + "==> (" + point.x + "," + point.y + ")";
+        }
+    }
+}
+
+
 function drawEdges() {
+    console.log("fu fucking bar");
     var edges = IdeaEdges.find();
     var context = getCanvasContext();
 
@@ -68,21 +104,17 @@ function drawEdges() {
        var node1 = IdeaNodes.findOne(edge.node1);
        var node2 = IdeaNodes.findOne(edge.node2);
 
-       //determine start node
-        var startNode;
-        var endNode;
-        if(node1.position[1] < node2.position[1]) {
-           startNode =  node1;
-           endNode = node2;
-        } else {
-           startNode =  node2;
-           endNode = node1;
-        }
+        //determine start node
 
-       context.beginPath();
-       context.moveTo(startNode.position[0], startNode.position[1] + CollabCanvas.boxPadding);
-       context.lineTo(endNode.position[0], endNode.position[1]);
-       context.stroke();
+        var startPointCoordinate = deriveNodeCoordinates(node1);
+        var endPointCoordinate = deriveNodeCoordinates(node2);
+
+        context.beginPath();
+        console.log(startPointCoordinate.toString());
+        context.moveTo(startPointCoordinate.midpoint().x, startPointCoordinate.midpoint().y);
+        context.lineTo(endPointCoordinate.midpoint().x, endPointCoordinate.midpoint().y);
+
+        context.stroke();
     });
 
 }
