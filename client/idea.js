@@ -32,17 +32,25 @@ Template.main.events({
 		if(Session.get('mode') === 'idea'){
 			var coord = util.extractClickCoordinates(event);
 			var node = getContainingNode(coord);
+
+			canvasDragEvent.startNodeId = node._id;
 		}
 	}
 })
 
-function getContainingNode(coords) {
-	return IdeaNodes.findOne(
-		{"rectCoords[0]": {$lte: coords.x}},
-		{"rectCoords[1]": {$lte: coords.y}},
-		{"rectCoords[2]": {$gte: coords.x}},
-		{"rectCoords[3]": {$gte: coords.y}});
+function getContainingNode(coords, callback) {
+	var result;
+	console.log(coords);
+	IdeaNodes.find({}).forEach(function(node){
+		if(node.rectCoords[0] <= coords.x
+			&& node.rectCoords[1] <= coords.y
+			&& node.rectCoords[2] >= coords.x
+			&& node.rectCoords[3] >= coords.y){
 
+			result = node;
+		}
+	});
+	return result;
 }
 
 function closeIdeaModal() {
