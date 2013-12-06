@@ -3,6 +3,11 @@ var newIdeaNode = {};
 Template.toolbar.events({
 	'click #ideaModeSelector': function(){
 		Session.set('mode', 'idea');
+	},
+	'click #clearCanvas': function(){
+		IdeaNodes.remove({})
+		IdeaEdges.remove({})
+		Shapes.remove({})
 	}
 })
 
@@ -12,8 +17,7 @@ Template.main.events({
 			var coord = extractClickCoordinates(event, target.firstNode);
 			toggleModal();
 			newIdeaNode = {
-				x: coord.x,
-				y: coord.y
+				position: [coord.x, coord.y]
 			};
 		}
 	}
@@ -28,6 +32,8 @@ Template.ideaInput.events({
 		var ideaText = $('#ideaInputText').val();
 		if(ideaText){
 			newIdeaNode.text = ideaText;
+			newIdeaNode.shortText = shortenText(ideaText);
+			setIdeaNodeDimensions();
 			saveIdeaNode();
 			closeIdeaModal();
 		}
@@ -35,7 +41,17 @@ Template.ideaInput.events({
 	'click #ideaInputCancel': function(){
 		closeIdeaModal();
 	}
+
 })
+
+function shortenText(text){
+	return text.length > 20 ? text.substring(0, 20) + " ..." : text;
+}
+
+function setIdeaNodeDimensions(){
+	newIdeaNode.height = 100;
+	newIdeaNode.width = 100;
+}
 
 function saveIdeaNode(){
 	IdeaNodes.insert(newIdeaNode);

@@ -3,15 +3,19 @@
     height:100%;
 }
 
-#toolbar{
+#toolbar {
     width:100%;
     background-color:#dddddd;
 }
 
-#ideaInput{
+#ideaInput {
     background-color: #666666;
     width:200px;
     height:100px;
     margin: auto;
 
+}
+
+#clearCanvas {
+    float: right;
 }
