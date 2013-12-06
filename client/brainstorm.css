@@ -17,9 +17,15 @@ body{
 }
 
 #ideaInput{
+    border: 2px solid black;
+    border-radius: 10px 10px;
+    padding: 10px;
     background-color: #666666;
     width:200px;
     height:100px;
     margin: auto;
-
+    overflow-y: auto;
+}
+#ideaInput input{
+    margin:5px;
 }
