@@ -1,3 +1,5 @@
+var newIdeaNode = {};
+
 Template.toolbar.events({
 	'click #ideaModeSelector': function(){
 		Session.set('mode', 'idea');
@@ -8,8 +10,37 @@ Template.toolbar.events({
 Template.main.events({
 	'click #mainCanvas': function(event, target){
 		var coord = extractClickCoordinates(event, target.firstNode);
+		toggleModal();
+		newIdeaNode = {
+			x: coord.x,
+			y: coord.y
+		};
 	}
 })
+
+Template.ideaInput.events({
+	'click #ideaInputSubmit': function(){
+		var ideaText = $('#ideaInputText').val();
+
+		if(ideaText){
+			toggleModal();
+			newIdeaNode.text = ideaText;
+			saveIdeaNode();
+		}
+	}
+})
+
+function saveIdeaNode(){
+	IdeaNodes.insert(newIdeaNode);
+	newIdeaNode = {};
+	IdeaNodes.find().forEach(function(idea){
+		console.log(idea);
+	})
+}
+
+function toggleModal(){
+	$('#ideaInput').modal('toggle');
+}
 
 function extractClickCoordinates(e, canvas){
 	var x;

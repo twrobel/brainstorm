@@ -1,11 +1,11 @@
 <head>
 	<title>brainstorm</title>
-	<link rel="stylesheet" href="bootstrap.css">
 </head>
 
 <body>
 	{{> toolbar}}
 	{{> main}}
+	{{> ideaInput}}
 </body>
 
 <template name="main">
@@ -15,5 +15,12 @@
 <template name="toolbar">
 	<div id="toolbar">
 		<button id="ideaModeSelector">Idea Mode</button>
+	</div>
+</template>
+
+<template name="ideaInput">
+	<div id="ideaInput" class="modal fade">
+		<input type="text" id="ideaInputText" /><br/>
+		<button id="ideaInputSubmit">Add Idea</button>
 	</div>
 </template>
