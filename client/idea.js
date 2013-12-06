@@ -5,9 +5,15 @@ Template.toolbar.events({
 		Session.set('mode', 'idea');
 	},
 	'click #clearCanvas': function(){
-		IdeaNodes.remove({})
-		IdeaEdges.remove({})
-		Shapes.remove({})
+		IdeaNodes.find({}).forEach(
+			function(node){ IdeaNodes.remove(node._id);}
+		)
+		IdeaEdges.find({}).forEach(
+			function(edge){ IdeaEdges.remove(edge._id);}
+		)
+		Shapes.find({}).forEach(
+			function(shape){ Shapes.remove(shape._id);}
+		)
 	}
 })
 
