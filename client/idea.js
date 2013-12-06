@@ -1,4 +1,5 @@
 var newIdeaNode = {};
+var canvasDragEvent = {startNodeId: undefined, endNodeId: undefined};
 
 Template.toolbar.events({
 	'click #ideaModeSelector': function(){
@@ -20,14 +21,29 @@ Template.toolbar.events({
 Template.main.events({
 	'click #mainCanvas': function(event, target){
 		if(Session.get('mode') === 'idea'){
-			var coord = extractClickCoordinates(event, target.firstNode);
+			var coord = util.extractClickCoordinates(event);
 			toggleModal();
 			newIdeaNode = {
 				position: [coord.x, coord.y]
 			};
 		}
+	},
+	'mousedown #mainCanvas': function(event, target){
+		if(Session.get('mode') === 'idea'){
+			var coord = util.extractClickCoordinates(event);
+			var node = getContainingNode(coord);
+		}
 	}
 })
+
+function getContainingNode(coords) {
+	return IdeaNodes.findOne(
+		{"rectCoords[0]": {$lte: coords.x}},
+		{"rectCoords[1]": {$lte: coords.y}},
+		{"rectCoords[2]": {$gte: coords.x}},
+		{"rectCoords[3]": {$gte: coords.y}});
+
+}
 
 function closeIdeaModal() {
 	toggleModal();
@@ -62,30 +78,9 @@ function setIdeaNodeDimensions(){
 function saveIdeaNode(){
 	IdeaNodes.insert(newIdeaNode);
 	newIdeaNode = {};
-	IdeaNodes.find().forEach(function(idea){
-		console.log(idea);
-	})
 }
 
 function toggleModal(){
 	$('#ideaInput').modal('toggle');
 }
 
-function extractClickCoordinates(e, canvas){
-	var x;
-	var y;
-	if (e.pageX || e.pageY) {
-		x = e.pageX;
-		y = e.pageY;
-	}
-	else {
-		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-	}
-	x -= canvas.offsetLeft;
-	y -= canvas.offsetTop;
-	return {
-		x: x,
-		y: y
-	}
-}
