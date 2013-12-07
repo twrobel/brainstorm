@@ -16,6 +16,10 @@ body{
     border-radius: 10px 10px;
 }
 
+#mainCanvas:hover {
+	cursor: pointer;
+}
+
 #toolbar{
     width:100%;
     padding: 10px;
@@ -48,7 +52,7 @@ body{
 	position: fixed;
 	right: 0;
 	bottom: 0;
-	height: 200px;
+	height: 20px;
 	width: 200px;
 }
 
