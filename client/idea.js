@@ -121,7 +121,9 @@ Template.ideaInput.events({
 })
 
 function deleteNode(){
-	//IdeaNodes.remove({_id : newIdeaNode._id});
+	IdeaEdges.find({ node1 : newIdeaNode._id}).forEach(function(e){IdeaEdges.remove({_id: e._id})});
+	IdeaEdges.find({ node2 : newIdeaNode._id}).forEach(function(e){IdeaEdges.remove({_id: e._id})});
+	IdeaNodes.remove({_id : newIdeaNode._id});
 }
 
 function linkNodeIfNecessary(){
