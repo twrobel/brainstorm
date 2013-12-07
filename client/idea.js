@@ -16,6 +16,9 @@ Template.toolbar.events({
 		Shapes.find({}).forEach(
 			function(shape){ Shapes.remove(shape._id);}
 		)
+		Messages.find({}).forEach(
+			function(message){ Messages.remove(message._id);}
+		)
 	}
 })
 
