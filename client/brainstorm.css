@@ -31,12 +31,15 @@ body{
     border-radius: 10px 10px;
     padding: 10px;
     background-color: #666666;
-    width:200px;
+    width:250px;
     height:100px;
     margin: auto;
     overflow-y: auto;
 }
-#ideaInput input,
+#ideaInput input {
+    margin:5px;
+    width: 90%;
+}
 #ideaInput button{
     margin:5px;
 }
