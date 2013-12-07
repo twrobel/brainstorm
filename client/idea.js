@@ -153,5 +153,8 @@ function updateIdeaNode(){
 
 function toggleModal(){
 	$('#ideaInput').modal('toggle');
+    setTimeout(function(){
+        $('#ideaInputText').focus();
+    }, 400);
 }
 
