@@ -109,9 +109,17 @@ Template.ideaInput.events({
 	},
 	'click #ideaInputCancel': function(){
 		closeIdeaModal();
+	},
+	'click #ideaInputDelete': function(){
+		deleteNode();
+		closeIdeaModal();
 	}
 
 })
+
+function deleteNode(){
+	//IdeaNodes.remove({_id : newIdeaNode._id});
+}
 
 function linkNodeIfNecessary(){
 	if(linkFrom){
@@ -149,6 +157,7 @@ function updateIdeaNode(){
 }
 
 function toggleModal(){
+	isEditMode ? $('#ideaInputDelete').show() : $('#ideaInputDelete').hide();
 	$('#ideaInput').modal('toggle');
 }
 
