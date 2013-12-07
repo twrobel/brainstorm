@@ -120,9 +120,11 @@ function drawEdges() {
         lastCoord = endPointCoordinate.midpoint();
     });
 
-	context.beginPath();
-	context.moveTo(lastCoord.x, lastCoord.y);
-    context.lineTo(lastCoord.x+1, lastCoord.y+1);
+    if(lastCoord) {
+		context.beginPath();
+		context.moveTo(lastCoord.x, lastCoord.y);
+	    context.lineTo(lastCoord.x+1, lastCoord.y+1);
+	}
 
     context.stroke();
 
