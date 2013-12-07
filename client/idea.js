@@ -95,20 +95,13 @@ function closeIdeaModal() {
 	$('#ideaInputText').val('');
 }
 Template.ideaInput.events({
-	'click #ideaInputSubmit': function(){
-		var ideaText = $('#ideaInputText').val();
-		if(ideaText){
-			newIdeaNode.text = ideaText;
-			newIdeaNode.shortText = shortenText(ideaText);
-			if(!isEditMode){
-				saveIdeaNode();
-				linkNodeIfNecessary();
-			}else{
-				updateIdeaNode();
-			}
-			newIdeaNode = {};
-			closeIdeaModal();
+	'keydown #ideaInputText': function(e){
+		if(e.which === 13){
+			saveNode();
 		}
+	},
+	'click #ideaInputSubmit': function(){
+		saveNode();
 	},
 	'click #ideaInputCancel': function(){
 		closeIdeaModal();
@@ -119,6 +112,22 @@ Template.ideaInput.events({
 	}
 
 })
+
+function saveNode(){
+	var ideaText = $('#ideaInputText').val();
+	if(ideaText){
+		newIdeaNode.text = ideaText;
+		newIdeaNode.shortText = shortenText(ideaText);
+		if(!isEditMode){
+			saveIdeaNode();
+			linkNodeIfNecessary();
+		}else{
+			updateIdeaNode();
+		}
+		newIdeaNode = {};
+		closeIdeaModal();
+	}
+}
 
 function deleteNode(){
 	IdeaEdges.find({ node1 : newIdeaNode._id}).forEach(function(e){IdeaEdges.remove({_id: e._id})});
