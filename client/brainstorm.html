@@ -18,8 +18,11 @@
 
 <template name="toolbar">
 	<div id="toolbar">
-		<button id="ideaModeSelector" class="btn btn-lg {{isIdeaMode}}">Idea Mode</button>
-		<button id="pencilModeSelector" class="btn btn-lg {{isPencilMode}}">Pencil Mode</button>
+		<button id="ideaModeSelector" class="btn btn-lg {{isIdeaMode}}">Idea</button>
+		<button id="pencilModeSelector" class="btn btn-lg {{isPencilMode}}">Pencil</button>
+		{{#if showEraserButton}}
+		<button id="erasorSelector" class="btn btn-lg {{isEraserMode}}">Eraser</button>
+		{{/if}}
 		<button id="clearCanvas" class="btn btn-lg btn-default">Clear</button>
 	</div>
 </template>
