@@ -1,9 +1,3 @@
-Template.toolbar.events({
-	'click #pencilModeSelector': function() {
-		Session.set('mode', 'pencil');
-	}
-});
-
 Template.main.events({
 	'mousedown #mainCanvas': function(event) {
 		if(Session.get('mode')==='pencil') {

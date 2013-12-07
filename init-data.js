@@ -6,6 +6,7 @@ IdeaNodes = new Meteor.Collection('IdeaNodes');
 IdeaEdges = new Meteor.Collection('IdeaEdges');
 Shapes = new Meteor.Collection('Shapes');
 Messages = new Meteor.Collection('Messages');
+Erasers = new Meteor.Collection('Erasers');
 
 if(Meteor.isServer && IdeaNodes.find().count() == 0) {
     var ideaNode1 = {
