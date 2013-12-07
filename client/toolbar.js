@@ -28,4 +28,4 @@ Template.toolbar.events({
 	'click #erasorSelector': function() {
 		Session.set('mode', 'eraser');
 	}
-})
+});

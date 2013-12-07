@@ -1,5 +1,6 @@
 Template.main.doNothing = function() {
 	Shapes.find().count();
+	Erasers.find().count();
 	IdeaEdges.find().count();
 	IdeaNodes.find().forEach(function(node){})
     return IdeaNodes.find().count();
@@ -26,6 +27,7 @@ Template.main.rendered = function() {
     drawNodes();
     drawNodeText();
     drawShapes();
+    drawErasers();
 };
 
 CollabCanvas =
@@ -141,7 +143,29 @@ function drawShapes() {
 function drawShape(coords) {
 	var context = $("#mainCanvas")[0].getContext("2d");
 
-	pencil.setupContext(context);
+	pencil.setupContextForPencil(context);
+
+	context.moveTo(coords[0].x, coords[0].y);
+
+	for(var i=1; i<coords.length; i++) {
+		context.lineTo(coords[i].x, coords[i].y);
+	}
+
+	context.stroke();
+}
+
+function drawErasers() {
+	var shapes_cursor = Erasers.find();
+
+	shapes_cursor.forEach(function(shape) {
+		drawEraser(shape.coords);
+	});
+}
+
+function drawEraser(coords) {
+	var context = $("#mainCanvas")[0].getContext("2d");
+
+	pencil.setupContextForEraser(context);
 
 	context.moveTo(coords[0].x, coords[0].y);
 

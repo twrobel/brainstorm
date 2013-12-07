@@ -9,7 +9,7 @@ Messages = new Meteor.Collection('Messages');
 Erasers = new Meteor.Collection('Erasers');
 
 if(Meteor.isServer && IdeaNodes.find().count() == 0) {
-    var ideaNode1 = {
+    /*var ideaNode1 = {
         position:[100,50],
         text:'Sample Idea Node 1'
     };
@@ -46,7 +46,7 @@ if(Meteor.isServer && IdeaNodes.find().count() == 0) {
     };
     IdeaEdges.insert(ideaEdge);
     IdeaEdges.insert(ideaEdge2);
-    IdeaEdges.insert(ideaEdge3);
+    IdeaEdges.insert(ideaEdge3);*/
 }
 
 
