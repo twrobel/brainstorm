@@ -79,7 +79,7 @@ function drawNodes() {
     nodes.forEach(function (node) {
         var coordinates = deriveNodeCoordinates(node);
         context.strokeStyle = 'black';
-        context.fillStyle = 'grey';
+        context.fillStyle = '#bbb';
         context.fillRect(coordinates.x1, coordinates.y1, coordinates.width, coordinates.height);
         context.stroke();
     });

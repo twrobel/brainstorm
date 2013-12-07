@@ -16,6 +16,10 @@ body{
     border-radius: 10px 10px;
 }
 
+#mainCanvas :hover{
+    cursor: pointer;
+}
+
 #mainCanvas:hover {
 	cursor: pointer;
 }
