@@ -1,6 +1,6 @@
 Template.main.events({
 	'mousedown #mainCanvas': function(event) {
-		if(Session.get('mode')==='pencil') {
+		if(Session.get('mode')==='pencil' || Session.get('mode')==='eraser') {
 			pencil.startDrawing(event);
 		}
 	},
@@ -21,10 +21,16 @@ pencil = {
 	},
 	context: null,
 
-	setupContext: function(ctx) {
+	setupContextForPencil: function(ctx) {
 		ctx.beginPath();
 		ctx.lineWidth = '1';
 		ctx.strokeStyle = 'red';
+	},
+
+	setupContextForEraser: function(ctx) {
+		ctx.beginPath();
+		ctx.lineWidth = '20';
+		ctx.strokeStyle = 'white';
 	},
 
 	startDrawing: function(mouseEvent) {
@@ -33,7 +39,13 @@ pencil = {
 		this.offset.x = canvasEl.offsetLeft;
 		this.offset.y = canvasEl.offsetTop;
 		this.context = canvasEl.getContext("2d");
-		this.setupContext(this.context);
+
+		if(Session.get('mode')==='pencil') {
+			this.setupContextForPencil(this.context);
+		} else {
+			this.setupContextForEraser(this.context);
+		}
+
 		var start = this.getTransformedCoord(mouseEvent);
 		this.context.moveTo(start.x, start.y);
 		this.addCoord(mouseEvent);
@@ -42,9 +54,15 @@ pencil = {
 		if(this.drawingStarted) {
 			this.addCoord(mouseEvent);
 			this.drawingStarted = false;
-			Shapes.insert({
-				coords: this.coords
-			});
+			if(Session.get('mode')==='pencil') {
+				Shapes.insert({
+					coords: this.coords
+				});
+			} else {
+				Erasers.insert({
+					coords: this.coords
+				});
+			} 
 			this.coords = [];
 		}
 	},
