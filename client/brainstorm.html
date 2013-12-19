@@ -3,10 +3,22 @@
 </head>
 
 <body>
-	{{> toolbar}}
-	{{> main}}
-	{{> ideaInput}}
+    {{> login}}
+	{{#if currentUser}}
+		{{> toolbar}}
+		{{> main}}
+		{{> ideaInput}}
+	{{/if}}
 </body>
+
+<template name="login">
+    {{#if currentUser}}
+    <div style="color:#aaaaaa;float:left" margin:10px="">Logged in as: 	{{username}}</div>
+    {{/if}}
+    <div style="margin:10px">
+        {{loginButtons}}
+    </div>
+</template>
 
 <template name="main">
     <div style="display:none;">{{doNothing}}</div>
@@ -41,7 +53,10 @@
 		<div id="chatstream" style="max-height:{{getHeight}}px;">
 			{{#each messages}}
 			<div class="msg">
-				<div class="msgdate">{{formatDate}}</div>
+                <div class="msgheader">
+                    <span class="msguser">{{username}}</span>
+                    <span class="msgdate">{{formatDate}}</span>
+                </div>
 				<div class="msgtext">{{text}}</div>
 			</div>
 			{{/each}}

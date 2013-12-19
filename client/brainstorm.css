@@ -112,6 +112,16 @@ body{
 	color: #999;
 }
 
+.msguser {
+    font-size: 80%;
+    text-align: left;
+    color: #666;
+}
+
+.msgheader {
+    text-align: right;
+}
+
 .msgtext {
 
 }

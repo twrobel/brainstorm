@@ -13,9 +13,11 @@ Template.chat.getHeight = function() {
 Template.chat.events({
 	'change #inputtext': function() {
 		var txt = $('#inputtext').val();
+        var username = Meteor.user() ? Meteor.user().services.github.username : "Anonymous";
 		Messages.insert({
 			text: txt,
-			date: (new Date()).toISOString()
+			date: (new Date()).toISOString(),
+            username: username
 		});
 		$('#inputtext').val('');
 	}

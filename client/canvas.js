@@ -1,3 +1,4 @@
+
 Template.main.doNothing = function() {
 	Shapes.find().count();
 	Erasers.find().count();

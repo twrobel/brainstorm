@@ -7,3 +7,7 @@ standard-app-packages
 autopublish
 insecure
 preserve-inputs
+accounts-github
+accounts-ui
+npm
+bootstrap
